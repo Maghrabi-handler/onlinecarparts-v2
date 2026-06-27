@@ -345,6 +345,10 @@ def add_result(
 
         article,
 
+        description,
+
+        product_type,
+
         result,
 
         link
@@ -360,6 +364,10 @@ def add_result(
         "SEARCH_BRAND": brand,
 
         "ARTICLE_NUMBER": article,
+
+        "DESCRIPTION": description,
+
+        "PRODUCT_TYPE": product_type,
 
         "RESULT": result,
 
@@ -650,6 +658,10 @@ with sync_playwright() as p:
 
                         "",
 
+                        "",
+
+                        "",
+
                         "BRAND NOT FOUND",
 
                         ""
@@ -808,6 +820,20 @@ with sync_playwright() as p:
 
                     link = product_item["url"]
                     description = product_item["description"]
+                    product_type = "PART"
+
+                    desc_upper = description.upper()
+
+                    if "REPAIR KIT" in desc_upper:
+                        product_type = "REPAIR_KIT"
+                    elif "MOUNTING KIT" in desc_upper:
+                        product_type = "MOUNTING_KIT"
+                    elif "BEARING KIT" in desc_upper:
+                        product_type = "BEARING_KIT"
+                    elif "BUSHING KIT" in desc_upper:
+                        product_type = "BUSHING_KIT"
+                    elif "BUSH KIT" in desc_upper:
+                        product_type = "BUSHING_KIT"
 
                     print()
 
@@ -925,6 +951,10 @@ with sync_playwright() as p:
 
                                 article_number,
 
+                                description,
+
+                                product_type,
+
                                 item,
 
                                 link
@@ -940,6 +970,10 @@ with sync_playwright() as p:
                             brand,
 
                             article_number,
+
+                            description,
+
+                            product_type,
 
                             "OEM NOT FOUND",
 
@@ -985,6 +1019,10 @@ with sync_playwright() as p:
 
                         "",
 
+                        "",
+
+                        "",
+
                         "PRODUCT NOT FOUND",
 
                         ""
@@ -1016,6 +1054,10 @@ with sync_playwright() as p:
                         part,
 
                         brand,
+
+                        "",
+
+                        "",
 
                         "",
 
