@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 # FILES
 # ==========================================================
 
-INPUT_FILE = r"C:\Users\Handler-Sm\OneDrive\Desktop\parts.xlsx"
+INPUT_FILE = r"C:\Users\Handler-Sm\OneDrive\Desktop\Coding\Online_Car_Parts\parts.xlsx"
 
 OUTPUT_FILE = r"C:\Users\Handler-Sm\OneDrive\Desktop\parts_result_final.xlsx"
 
@@ -723,6 +723,7 @@ with sync_playwright() as p:
                 # =====================================
                 # LOOP PRODUCTS
                 # =====================================
+                collected_products = []
 
                 for x in range(product_count):
 
@@ -757,9 +758,6 @@ with sync_playwright() as p:
                     if clean_part not in clean_combined:
 
                         continue
-                    # =====================================
-                    # OPEN PRODUCT
-                    # =====================================
 
                     link = product.locator(
                         "a.product-card__title-link"
@@ -775,6 +773,41 @@ with sync_playwright() as p:
                             "https://www.onlinecarparts.co.uk"
                             + link
                         )
+
+                    description = ""
+
+                    try:
+                        description = product.locator(
+                            "a.product-card__title-link"
+                        ).text_content().strip()
+                    except:
+                        pass
+
+                    
+
+                    collected_products.append(
+                        {
+                            "url": link,
+                            "description": description
+                        }
+                    )
+
+                    product_found = True
+
+                # =====================================
+                # PROCESS COLLECTED PRODUCTS
+                # =====================================
+
+                print()
+                print(f"Collected Products : {len(collected_products)}")
+
+                for product_item in collected_products:
+
+                    if not product_item["url"]:
+                        continue
+
+                    link = product_item["url"]
+                    description = product_item["description"]
 
                     print()
 
@@ -795,8 +828,6 @@ with sync_playwright() as p:
                     page.wait_for_timeout(5000)
 
                     close_cookies(page)
-
-                    product_found = True
 
                     # =====================================
                     # ARTICLE NUMBER
@@ -915,8 +946,6 @@ with sync_playwright() as p:
                             link
 
                         )
-
-                    break
 
                 # =====================================
                 # PRODUCT NOT FOUND
