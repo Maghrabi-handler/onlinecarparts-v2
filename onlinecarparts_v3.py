@@ -947,6 +947,30 @@ with sync_playwright() as p:
 
                         )
 
+                unique_articles = []
+
+                for record in results:
+
+                    if record["INPUT_PART"] == part:
+
+                        article_number = str(record["ARTICLE_NUMBER"]).strip()
+
+                        if article_number and article_number not in unique_articles:
+
+                            unique_articles.append(article_number)
+
+                article_group = " | ".join(unique_articles)
+
+                article_count = len(unique_articles)
+
+                for record in results:
+
+                    if record["INPUT_PART"] == part:
+
+                        record["ARTICLE_GROUP"] = article_group
+
+                        record["ARTICLE_COUNT"] = article_count
+
                 # =====================================
                 # PRODUCT NOT FOUND
                 # =====================================
